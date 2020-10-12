@@ -19,7 +19,7 @@ namespace CustomerApi
             services.AddDbContext<CustomerContext>
                 (option => option.UseSqlServer(Configuration["Data:CustomerAPIConnection:ConnectionString"]));
             services.AddMvc(option => option.EnableEndpointRouting = false);
-            services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Latest);
+            services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
