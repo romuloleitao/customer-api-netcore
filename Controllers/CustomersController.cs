@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using CustomerApi.Models;
 
 namespace CustomerApi.Controllers
@@ -14,16 +15,19 @@ namespace CustomerApi.Controllers
 
         //GET: api/customers
         [HttpGet]
-        public ActionResult<IEnumerable<Customer>> GetCustomers() {
+        public ActionResult<IEnumerable<Customer>> GetCustomers()
+        {
             return _context.CustomerItems;
         }
 
         //GET: api/customers/n
         [HttpGet("{id}")]
-        public ActionResult<Customer> GetCustomerItem(int id) {
+        public ActionResult<Customer> GetCustomerItem(int id)
+        {
             var customerItem = _context.CustomerItems.Find(id);
 
-            if (customerItem == null) {
+            if (customerItem == null)
+            {
                 return NotFound();
             }
             return customerItem;
@@ -31,11 +35,27 @@ namespace CustomerApi.Controllers
 
         //POST: api/customers
         [HttpPost]
-        public ActionResult<Customer> PostCustomerItem(Customer customerItem) {
+        public ActionResult<Customer> PostCustomerItem(Customer customerItem)
+        {
             _context.CustomerItems.Add(customerItem);
             _context.SaveChanges();
 
-            return CreatedAtAction("GetCustomerItem", new Customer{Id = customerItem.Id}, customerItem);
+            return CreatedAtAction("GetCustomerItem", new Customer { Id = customerItem.Id }, customerItem);
+        }
+
+        //PUT: api/customers/n
+        [HttpPut("{id}")]
+        public ActionResult PutCustomerItem(int id, Customer customerItem)
+        {
+            if (id != customerItem.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(customerItem).State = EntityState.Modified;
+            _context.SaveChanges();
+
+            return NoContent();
         }
     }
 }
