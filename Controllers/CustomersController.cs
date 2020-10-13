@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using CustomerApi.Models;
 
 namespace CustomerApi.Controllers
 {
@@ -7,7 +8,34 @@ namespace CustomerApi.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
+        private readonly CustomerContext _context;
+
+        public CustomersController(CustomerContext context) => _context = context;
+
+        //GET: api/customers
         [HttpGet]
-        public ActionResult<IEnumerable<string>> GetString() => new string[] { "this", "is", "hard", "coded" };
+        public ActionResult<IEnumerable<Customer>> GetCustomers() {
+            return _context.CustomerItems;
+        }
+
+        //GET: api/customers/n
+        [HttpGet("{id}")]
+        public ActionResult<Customer> GetCustomerItem(int id) {
+            var customerItem = _context.CustomerItems.Find(id);
+
+            if (customerItem == null) {
+                return NotFound();
+            }
+            return customerItem;
+        }
+
+        //POST: api/customers
+        [HttpPost]
+        public ActionResult<Customer> PostCustomerItem(Customer customerItem) {
+            _context.CustomerItems.Add(customerItem);
+            _context.SaveChanges();
+
+            return CreatedAtAction("GetCustomerItem", new Customer{Id = customerItem.Id}, customerItem);
+        }
     }
 }
