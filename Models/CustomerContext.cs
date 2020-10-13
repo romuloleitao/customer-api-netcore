@@ -9,7 +9,7 @@ namespace CustomerApi.Models
 
         }
 
-        public DbSet<Customer> CommandItems { get; set; }
+        public DbSet<Customer> CustomerItems { get; set; }
         
     }
 }

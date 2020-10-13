@@ -36,7 +36,7 @@ namespace CustomerApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CommandItems");
+                    b.ToTable("CustomerItems");
                 });
 #pragma warning restore 612, 618
         }
