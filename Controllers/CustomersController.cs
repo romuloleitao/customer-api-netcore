@@ -57,5 +57,22 @@ namespace CustomerApi.Controllers
 
             return NoContent();
         }
+
+        //DELETE api/customer/n
+        [HttpDelete("{id}")]
+        public ActionResult<Customer> DeleteCustomerItem(int id)
+        {
+            var customerItem = _context.CustomerItems.Find(id);
+
+            if (customerItem == null)
+            {
+                return NotFound();
+            }
+
+            _context.CustomerItems.Remove(customerItem);
+            _context.SaveChanges();
+
+            return customerItem;
+        }
     }
 }
